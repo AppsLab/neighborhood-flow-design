@@ -1,0 +1,16 @@
+[
+  {
+    "id": "68544f62.97abb",
+    "type": "flow server",
+    "hosted": true,
+    "name": "flow",
+    "flowFile": "flow.json",
+    "configFile": "config.json"
+  },
+  {
+    "id": "11f240f4.ee0dbf",
+    "type": "m2x feed",
+    "apiKey": "fa940465be5cd69813bc732d1588c5e2",
+    "name": "All Data"
+  }
+]

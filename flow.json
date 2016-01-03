@@ -1,0 +1,838 @@
+[
+  {
+    "type": "tab",
+    "id": "828b2334.7d74e",
+    "label": "Neighborhood Flow",
+    "debugOutput": false,
+    "debugBreak": false
+  },
+  {
+    "id": "6d705c08.928fa4",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Make Parse.com POST",
+    "func": "if (msg.payload !== null) {\n    msg.headers = {\n        \"X-Parse-Application-Id\":\"hZVSkZmddY7FrARJDIGa4pbI4CrvEpjl4kq90nVT\",\n        \"X-Parse-REST-API-Key\":\"teMuD2TUrY12QfFJIDbJ6AtbD9xWDizTYcAz7r7Z\",\n        \"Content-Type\":\"application/json\"\n    };\n    msg.payload = {\n        \"where\":{\"deviceType\":\"ios\"},\n        \"data\":{\"alert\":\"Unknown Visitor\"}\n    };\n}\n\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 472.03125762939453,
+    "y": 114.83334732055664,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "45ce52f2.ba31ac"
+      ]
+    ]
+  },
+  {
+    "id": "a84a9a58.57b568",
+    "type": "debug",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "heyo",
+    "active": false,
+    "console": "false",
+    "complete": "payload",
+    "x": 1289.9587631225586,
+    "y": 200.97622871398926,
+    "z": "828b2334.7d74e",
+    "wires": [
+
+    ]
+  },
+  {
+    "id": "45ce52f2.ba31ac",
+    "type": "http request",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Do Parse.com POST",
+    "method": "POST",
+    "ret": "txt",
+    "url": "https://api.parse.com/1/push",
+    "configKey": "",
+    "username": "",
+    "password": "",
+    "useAuth": false,
+    "encryption": "none",
+    "useCertificate": false,
+    "decrypt": false,
+    "cert": "",
+    "key": "",
+    "encryptObj": [
+      "username",
+      "password"
+    ],
+    "x": 1078.138442993164,
+    "y": 243.97620296478271,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "a84a9a58.57b568"
+      ]
+    ]
+  },
+  {
+    "id": "598b4b24.a674b4",
+    "type": "http request",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Do APEX POST",
+    "method": "POST",
+    "ret": "txt",
+    "url": "https://apex.oracle.com/pls/apex/m2m/timeline",
+    "configKey": "",
+    "username": "",
+    "password": "",
+    "useAuth": false,
+    "encryption": "none",
+    "useCertificate": false,
+    "decrypt": false,
+    "cert": "",
+    "key": "",
+    "encryptObj": [
+      "username",
+      "password"
+    ],
+    "x": 1060.1027374267578,
+    "y": 184.36905479431152,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "a84a9a58.57b568"
+      ]
+    ]
+  },
+  {
+    "id": "8eee408e.7111c",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Make APEX POST",
+    "func": "if (msg.payload !== null) {\n    msg.headers = {\n        \"Content-Type\":\"application/json\"\n    };\n    msg.payload = {\n        \"name\":\"Unknown Visitor\",\n        \"url\":msg.payload.values.gate_photos.value,\n        \"category\":\"gate\",\n        \"created_by\":\"Anne O. Nemus\",\n        \"lat\":\"0\",\n        \"lon\":\"0\"\n    };\n}\n\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 456.03125762939453,
+    "y": 59.58332824707031,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "598b4b24.a674b4"
+      ]
+    ]
+  },
+  {
+    "id": "7698f20f.89670c",
+    "type": "http in",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Gate Intruder Endpoint",
+    "url": "/gate_update",
+    "method": "post",
+    "configKey": "",
+    "username": "",
+    "password": "",
+    "authType": "noAuth",
+    "useAuth": false,
+    "useOauth": false,
+    "encryption": "none",
+    "realm": "",
+    "clientId": "",
+    "clientSecret": "",
+    "site": "",
+    "authorizationPath": "/oauth/authorize",
+    "tokenPath": "/oauth/access_token",
+    "scope": "",
+    "encryptObj": [
+      "username",
+      "password",
+      "clientId",
+      "clientSecret"
+    ],
+    "x": 181.53126525878906,
+    "y": 56.75,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "8eee408e.7111c",
+        "6d705c08.928fa4",
+        "4899ba60.b76644"
+      ]
+    ]
+  },
+  {
+    "id": "36a0cb1c.c95f34",
+    "type": "http in",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "User Report Endpoint",
+    "url": "/user_report",
+    "method": "post",
+    "configKey": "",
+    "username": "",
+    "password": "",
+    "authType": "noAuth",
+    "useAuth": false,
+    "useOauth": false,
+    "encryption": "none",
+    "realm": "",
+    "clientId": "",
+    "clientSecret": "",
+    "site": "",
+    "authorizationPath": "/oauth/authorize",
+    "tokenPath": "/oauth/access_token",
+    "scope": "",
+    "encryptObj": [
+      "username",
+      "password",
+      "clientId",
+      "clientSecret"
+    ],
+    "x": 191.83035278320312,
+    "y": 356.4285945892334,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "6cad5ad9.9352a4",
+        "f5dc594.f0a23a8",
+        "4899ba60.b76644",
+        "b553498.f4aacb8"
+      ]
+    ]
+  },
+  {
+    "id": "6cad5ad9.9352a4",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Make APEX POST",
+    "func": "if (msg.payload !== null) {\n    msg.headers = {\n        \"Content-Type\":\"application/json\"\n    };\n    var main_data = msg.payload.values.user_reports.value;\n    var split_data = main_data.split(\":\");\n    var a_dat,b_dat;\n    if (split_data.length === 2) {\n        a_dat = split_data[0];\n        b_dat = split_data[1];\n    } else {\n        a_dat = main_data;\n        b_dat = \"ERROR PARSING!\";\n    }\n    msg.payload = {\n        \"category\":a_dat,\n        \"name\":b_dat,\n        \"created_by\":\"Anne O. Nemus\",\n        \"lat\":\"0\",\n        \"lon\":\"0\"\n    };\n}\n\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 466.4732131958008,
+    "y": 249.64288711547852,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "598b4b24.a674b4"
+      ]
+    ]
+  },
+  {
+    "id": "f5dc594.f0a23a8",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Make Parse.com POST",
+    "func": "if (msg.payload !== null) {\n    msg.headers = {\n        \"X-Parse-Application-Id\":\"hZVSkZmddY7FrARJDIGa4pbI4CrvEpjl4kq90nVT\",\n        \"X-Parse-REST-API-Key\":\"teMuD2TUrY12QfFJIDbJ6AtbD9xWDizTYcAz7r7Z\",\n        \"Content-Type\":\"application/json\"\n    };\n    var main_data = msg.payload.values.user_reports.value;\n    var split_data = main_data.split(\":\");\n    var a_dat,b_dat;\n    if (split_data.length === 2) {\n        b_dat = split_data[1];\n    } else {\n        b_dat = \"ERROR PARSING: \" + main_data;\n    }\n    msg.payload = {\n        \"where\":{\"deviceType\":\"ios\"},\n        \"data\":{\"alert\":b_dat}\n    };\n}\n\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 483.43750762939453,
+    "y": 304.4643325805664,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "45ce52f2.ba31ac"
+      ]
+    ]
+  },
+  {
+    "id": "b553498.f4aacb8",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Make Light Post",
+    "func": "var lightOnOff = \"off\";\nif (msg.payload !== null && msg.payload.values.user_reports.value.indexOf(\"suspicious:\") == 0) {\n   lightOnOff = \"on\";\n}\nmsg.payload = \"state=\" + lightOnOff;\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 470.83985137939453,
+    "y": 358.75000762939453,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "57f32bc2.a80cd4"
+      ]
+    ]
+  },
+  {
+    "id": "57f32bc2.a80cd4",
+    "type": "http curl",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Do Light PUT",
+    "method": "PUT",
+    "url": "https://c3a4121cdbfd11a9e1681250c68382981d68ad953ca16bcff4434671d12e7975:@api.lifx.com/v1beta1/lights/all/power",
+    "ret": "txt",
+    "configKey": "",
+    "useAuth": false,
+    "username": "",
+    "password": "",
+    "encryption": "0",
+    "useCertificate": false,
+    "cert": "",
+    "key": "",
+    "verbose": false,
+    "x": 753.3398590087891,
+    "y": 421.25000762939453,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "3f88303d.c077d"
+      ]
+    ],
+    "encryptObj": [
+      "username",
+      "password"
+    ]
+  },
+  {
+    "id": "3f88303d.c077d",
+    "type": "debug",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Out1",
+    "active": false,
+    "console": "false",
+    "complete": "payload",
+    "x": 1120.839859008789,
+    "y": 437.5000057220459,
+    "z": "828b2334.7d74e",
+    "wires": [
+
+    ]
+  },
+  {
+    "id": "64d3dbe6.9b2c24",
+    "type": "http in",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "IoT 1",
+    "url": "/iot1",
+    "method": "post",
+    "configKey": "",
+    "username": "",
+    "password": "",
+    "authType": "noAuth",
+    "useAuth": false,
+    "useOauth": false,
+    "encryption": "none",
+    "realm": "",
+    "clientId": "",
+    "clientSecret": "",
+    "site": "",
+    "authorizationPath": "/oauth/authorize",
+    "tokenPath": "/oauth/access_token",
+    "scope": "",
+    "encryptObj": [
+      "username",
+      "password",
+      "clientId",
+      "clientSecret"
+    ],
+    "x": 70,
+    "y": 471.2500066757202,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "e3bcfe89.1c43",
+        "4899ba60.b76644"
+      ]
+    ]
+  },
+  {
+    "id": "d7a3ab05.285c58",
+    "type": "inject",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "OnStart Digital Life Auth",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": true,
+    "x": 144.4062442779541,
+    "y": 601.5000076293945,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "675a2668.98a5d8"
+      ]
+    ]
+  },
+  {
+    "id": "675a2668.98a5d8",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Digital Life Credentials",
+    "func": "context.global.settings = \n{\n\t userId : '553474463',\n\t password : 'NO-PASSWD',\n\t appKey : 'HE_85E657E9E1C87F1D_1'\n}\nmsg.payload = context.global.settings;\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 296.68401527404785,
+    "y": 665.1666965484619,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "b6b3e36e.494c2"
+      ]
+    ]
+  },
+  {
+    "id": "b6b3e36e.494c2",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Build Auth URL",
+    "func": "var s = context.global.settings;\nmsg.url = 'https://systest.digitallife.att.com/penguin/api/authtokens?'\n\t+'userId='+s.userId\n\t+'&password='+s.password\n\t+'&domain=DL'\n\t+'&appKey='+s.appKey;\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 433.88891792297363,
+    "y": 598.3333206176758,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "b6e22e7a.491dd"
+      ]
+    ]
+  },
+  {
+    "id": "b6e22e7a.491dd",
+    "type": "http request",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "api/authtokens",
+    "method": "POST",
+    "ret": "txt",
+    "url": "",
+    "configKey": "",
+    "username": "",
+    "password": "",
+    "useAuth": false,
+    "encryption": "none",
+    "useCertificate": false,
+    "decrypt": false,
+    "cert": "",
+    "key": "",
+    "encryptObj": [
+      "username",
+      "password"
+    ],
+    "x": 537.2221775054932,
+    "y": 663.4722375869751,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "935f3055.6ca0d"
+      ]
+    ]
+  },
+  {
+    "id": "935f3055.6ca0d",
+    "type": "json",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "",
+    "x": 632.2222385406494,
+    "y": 598.4722375869751,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "7f22bd15.80dd44"
+      ]
+    ]
+  },
+  {
+    "id": "7f22bd15.80dd44",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Save Auth",
+    "func": "context.global.auth = msg.payload.content;\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 735.5555515289307,
+    "y": 659.5832614898682,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "152778e0.ead887"
+      ]
+    ]
+  },
+  {
+    "id": "152778e0.ead887",
+    "type": "debug",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Debug AUTH",
+    "active": false,
+    "console": "false",
+    "complete": "payload",
+    "x": 816.3888111114502,
+    "y": 600.5555515289307,
+    "z": "828b2334.7d74e",
+    "wires": [
+
+    ]
+  },
+  {
+    "id": "e3bcfe89.1c43",
+    "type": "debug",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "",
+    "active": false,
+    "console": "false",
+    "complete": "false",
+    "x": 420.1953315734863,
+    "y": 513.7500076293945,
+    "z": "828b2334.7d74e",
+    "wires": [
+
+    ]
+  },
+  {
+    "id": "4899ba60.b76644",
+    "type": "http response",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "200 OK",
+    "x": 106.4453125,
+    "y": 255.00000381469727,
+    "z": "828b2334.7d74e",
+    "wires": [
+
+    ]
+  },
+  {
+    "id": "466500f5.b99b",
+    "type": "inject",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Digital Life Light ON",
+    "topic": "devices/PE00000002/switch/on",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 387.08985137939453,
+    "y": 432.5000057220459,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "f15f9da0.0ea06"
+      ]
+    ]
+  },
+  {
+    "id": "f15f9da0.0ea06",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Set POST",
+    "func": "msg.method = 'POST';\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 574.5898513793945,
+    "y": 460.0000066757202,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "c42fa72a.3bd058"
+      ]
+    ]
+  },
+  {
+    "id": "c42fa72a.3bd058",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Set POST",
+    "func": "var auth = context.global.auth;\nvar settings = context.global.settings;\nif(!msg.headers)\n\tmsg.headers = {};\n\nmsg.headers[\"Appkey\"] = settings.appKey;\nmsg.headers[\"Authtoken\"] = auth.authToken;\nmsg.headers[\"Requesttoken\"] = auth.requestToken;\n\nmsg.url = 'https://systest.digitallife.att.com/penguin/api/' + auth.gateways[0].id + '/' + msg.topic;\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 728.33984375,
+    "y": 488.75,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "68998924.976678"
+      ]
+    ]
+  },
+  {
+    "id": "68998924.976678",
+    "type": "http request",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Set GET",
+    "method": "GET",
+    "ret": "txt",
+    "url": "",
+    "configKey": "",
+    "username": "",
+    "password": "",
+    "useAuth": false,
+    "encryption": "none",
+    "useCertificate": false,
+    "decrypt": false,
+    "cert": "",
+    "key": "",
+    "encryptObj": [
+      "username",
+      "password"
+    ],
+    "x": 903.3398590087891,
+    "y": 511.25000762939453,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "3f88303d.c077d"
+      ]
+    ]
+  },
+  {
+    "id": "2b6861ec.d4979e",
+    "type": "inject",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Digital Life Light OFF",
+    "topic": "devices/DE00000009/switch",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 1093.33984375,
+    "y": 576.25,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "5c7d6710.a38298"
+      ]
+    ]
+  },
+  {
+    "id": "5c7d6710.a38298",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Set POST",
+    "func": "msg.method = 'POST';\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 1280.83984375,
+    "y": 603.7500009536743,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "f7a77ccd.08588"
+      ]
+    ]
+  },
+  {
+    "id": "f7a77ccd.08588",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Build API Request",
+    "func": "var auth = context.global.auth;\nvar settings = context.global.settings;\nif(!msg.headers)\n\tmsg.headers = {};\n\nmsg.headers[\"Appkey\"] = settings.appKey;\nmsg.headers[\"Authtoken\"] = auth.authToken;\nmsg.headers[\"Requesttoken\"] = auth.requestToken;\nmsg.url='https://systest.digitallife.att.com:443/penguin/api/DC1282E6A0EC45EBB29DA9E23B6B0ED1/devices/DE00000009/switch';\n//msg.url = 'https://systest.digitallife.att.com/penguin/api/' + auth.gateways[0].id + '/' + msg.topic;\nmsg.payload=\"on\";\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 1459.5898628234863,
+    "y": 643.7500095367432,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "2d33ba38.d2cc46",
+        "fb130514.04ecf8"
+      ]
+    ]
+  },
+  {
+    "id": "2d33ba38.d2cc46",
+    "type": "http request",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Set GET",
+    "method": "POST",
+    "ret": "txt",
+    "url": "",
+    "configKey": "",
+    "username": "",
+    "password": "",
+    "useAuth": false,
+    "encryption": "none",
+    "useCertificate": false,
+    "decrypt": false,
+    "cert": "",
+    "key": "",
+    "encryptObj": [
+      "username",
+      "password"
+    ],
+    "x": 1632.0898666381836,
+    "y": 682.5000095367432,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "fb130514.04ecf8",
+        "1dc1562d.e23eaa"
+      ]
+    ]
+  },
+  {
+    "id": "a20c275e.5df3d8",
+    "type": "inject",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "devices",
+    "topic": "devices",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 1067.089859008789,
+    "y": 742.5000095367432,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "f5976e9a.0a689"
+      ]
+    ]
+  },
+  {
+    "id": "f5976e9a.0a689",
+    "type": "function",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "Build API Request",
+    "func": "var auth = context.global.auth;\nvar settings = context.global.settings;\nif(!msg.headers)\n\tmsg.headers = {};\n\nmsg.headers[\"Appkey\"] = settings.appKey;\nmsg.headers[\"Authtoken\"] = auth.authToken;\nmsg.headers[\"Requesttoken\"] = auth.requestToken;\n\nmsg.url = 'https://systest.digitallife.att.com/penguin/api/' + auth.gateways[0].id + '/' + msg.topic;\nreturn msg;",
+    "outputs": 1,
+    "valid": true,
+    "dependencies": [
+
+    ],
+    "x": 1259.5898628234863,
+    "y": 776.2500104904175,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "1af30040.e50d"
+      ]
+    ]
+  },
+  {
+    "id": "1af30040.e50d",
+    "type": "http request",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "",
+    "method": "GET",
+    "ret": "txt",
+    "url": "",
+    "configKey": "",
+    "username": "",
+    "password": "",
+    "useAuth": false,
+    "encryption": "none",
+    "useCertificate": false,
+    "decrypt": false,
+    "cert": "",
+    "key": "",
+    "encryptObj": [
+      "username",
+      "password"
+    ],
+    "x": 1454.589859008789,
+    "y": 807.5000095367432,
+    "z": "828b2334.7d74e",
+    "wires": [
+      [
+        "254d74b5.dab28c"
+      ]
+    ]
+  },
+  {
+    "id": "254d74b5.dab28c",
+    "type": "debug",
+    "debugBreak": false,
+    "debugOutput": false,
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 1644.589859008789,
+    "y": 833.7500104904175,
+    "z": "828b2334.7d74e",
+    "wires": [
+
+    ]
+  },
+  {
+    "id": "fb130514.04ecf8",
+    "type": "debug",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "headers",
+    "x": 1682.671875,
+    "y": 575,
+    "z": "828b2334.7d74e",
+    "wires": [
+
+    ]
+  },
+  {
+    "id": "1dc1562d.e23eaa",
+    "type": "debug",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 1817.671875,
+    "y": 697,
+    "z": "828b2334.7d74e",
+    "wires": [
+
+    ]
+  }
+]
